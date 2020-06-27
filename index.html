@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>来了老弟<( ￣^￣)>
+    </title>
+    <link rel="stylesheet" href="Css/style.css">
+    <link rel="shortcut icon" href="/favicon.png" type="image/x-icon">
+    <script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+</head>
+
+<body>
+    <div id="bg" v-bind:style="app">
+        <div class="main">
+            <div id="left-date">
+                <h1 id="date">{{ date }}</h1>
+                <h3 id="date-year">{{ year }}</h3>
+                <p id="address-detail">{{ city }} <span>{{ weather }}</span> </p>
+            </div>
+            <div id="href-post">
+                <div id="one-words" @click="repace()" title="点击刷新一言">
+                    <p>{{ onewords }}</p>
+                    <p>---来自  {{ one_word_user }}</p>
+                </div>
+                <div id="hrefs">
+                    <div id="blog" class="x-container" @click="goto('blog')">{{ name1 }}</div>
+                    <div id="demo" class="x-tab x-container" @click="goto('demo')">{{ name2 }}</div>
+                    <div id="about" class="x-tab x-container" @click="goto('about')">{{ name3 }}</div>
+                </div>
+            </div>
+        </div class="main">
+        <div id="bottom">
+            <p>{{ beian }}   版权所属:{{ banquan }}</p>
+        </div>
+    </div>
+    <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+    <script src="../JS/vue-2.6.11.min.js"></script>
+    <script src="../JS/main.js"></script>
+</body>
+
+</html>
