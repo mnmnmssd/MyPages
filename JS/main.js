@@ -11,19 +11,19 @@ var ip = returnCitySN['cip'];
 //利用腾讯地图API接口返回访问者所在城市
 var city_url = "https://apis.map.qq.com/ws/location/v1/ip?ip=";
 //请在https://lbs.qq.com 申请专属key
-var key = "";
+var key;
 
 //利用看云API获取天气
 var weather_url = "https://www.tianqiapi.com/free/day?";
 //请在 https://www.tianqiapi.com/ 获取专属appid与appkey
-var appid = "";
-var appkey = "";
+var appid;
+var appkey;
 
 //一言接口
 var onewords_url = "https://v1.hitokoto.cn/"
 
 //壁纸接口
-var syxzImg_url = "https://img.xjh.me/random_img.php?return=json&type=bg&ctype=nature"//ctype可选属性 acg/nature 分别为动漫与风景
+var syxzImg_url = "https://img.xjh.me/random_img.php?return=json&type=bg&ctype=nature" //ctype可选属性 acg/nature 分别为动漫与风景
 // var syxz_url = "https://cn.bing.com"
 var PiG_img = {
     url: null
@@ -40,11 +40,11 @@ var vm = new Vue({
             weather: "weather",
             onewords: "一言提供接口",
             one_word_user: "一言",
-            name1: "blog",//链接名称
+            name1: "blog", //链接名称
             name2: "demo",
             name3: "about",
-            beian: "",//备案号
-            banquan: "",//版权信息
+            beian: "", //备案号
+            banquan: "", //版权信息
             app: {
                 backgroundImage: 'url(' + PiG_img.url + ')'
             }
@@ -66,28 +66,43 @@ var vm = new Vue({
                 "-" +
                 new Date().getDate();
         }, 1000);
+
+        axios.get('static/config.json')
+            .then(res => {
+                key = res.data.key;
+                appid = res.data.appid;
+                appkey = res.data.appkey;
+                _this.beian = res.data.beian;
+                _this.banquan = res.data.banquan;
+                init();
+            })
+            .catch(err => {
+                console.error(err);
+            })
+
+        var init = () => {
+            axios.get(weather_url + "appid=" + appid + "&appsecret=" + appkey + "&ip=" + ip)
+                .then(res => {
+                    _this.weather = res.data.wea + " " +
+                        "当前温度:" + res.data.tem + "℃ " +
+                        "白天温度:" + res.data.tem_day + "℃ " +
+                        "夜间温度:" + res.data.tem_night + "℃";
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+            axios.get(city_url + ip + "&key=" + key)
+                .then(res => {
+                    _this.city = res.data.result.ad_info.city;
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        }
+
     },
     mounted() {
         var _this = this;
-
-        axios.get(city_url + ip + "&key=" + key)
-            .then(res => {
-                _this.city = res.data.result.ad_info.city;
-            })
-            .catch(err => {
-                console.error(err);
-            })
-
-        axios.get(weather_url + "appid=" + appid + "&appsecret=" + appkey + "&ip=" + ip)
-            .then(res => {
-                _this.weather = res.data.wea + " " +
-                    "当前温度:" + res.data.tem + "℃ " +
-                    "白天温度:" + res.data.tem_day + "℃ " +
-                    "夜间温度:" + res.data.tem_night + "℃";
-            })
-            .catch(err => {
-                console.error(err);
-            })
 
         axios.get(onewords_url)
             .then(res => {
@@ -123,11 +138,11 @@ var vm = new Vue({
         },
         goto(event) {
             if (event == "blog") {
-                window.open("");//跳转链接
+                window.open(""); //跳转链接
             } else if (event == "demo") {
-                window.open("");//跳转链接
+                window.open(""); //跳转链接
             } else if (event == "about") {
-                window.open("");//跳转链接
+                window.open(""); //跳转链接
             }
         }
     },
